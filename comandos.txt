@@ -1,0 +1,67 @@
+> pip install django==3.1
+> pip freeze
+> django-admin startproject greatkart .                 #crea un nuevo projecto de Django
+> python manage.py runserver                            #ejecuta el servidor web de Django
+> pip install pillow
+
+
+1. definimos un directorio Templates para los ficheros HTML o templates de la aplicacion
+2. agregamos la ruta o nombre del directorio que contiene los templates en el fichero greatkart/settings.py - TEMPLATES[]
+3. indicar la ubicacion de los elementos estaticos (css,fonts, images) en el fichero greatkart/settings.py - STATICFILES_DIRS[]
+
+#referencia (copia) en la raiz los elementos estaticos almacenados dentro del proyecto
+> python manage.py collectstatic
+
+4. se referencian los elementos estaticos dentro del template HTTP - href="{% static '<elemento>' %}"
+5. crear un archivo base.html que incluya las secciones comunes (header, nabvar, footer) de otras templates
+{% load static %} {% block content %} {% endblock %} {% include '<elemento>' %}
+
+> python manage.py startapp category                    #crea una nueva app dentro del proyecto
+
+6. registra la nueva app en el archivo greatkart/settings.py INSTALLED_APPS[] del proyecto 'greatkart'
+7. crea el modelo para la BD en el archivo models.py de la app 'category' y se registra en el archivo admin.py
+
+#crea el modelo para la BD y realiza todas las migraciones
+> python manage.py makemigrations
+> python manage.py migrate
+
+#crea una cuenta de superuser para la consola de admin. de Django http://127.0.0.1:8000/admin
+> python manage.py createsuperuser
+
+8. crea una nueva aplicacion, que se registra en el archivo greatkart/settings.py INSTALLED_APPS[], y un modelo de usuario personalizado
+> python manage.py startapp category
+
+9. registra el modelo creado en la nueva aplicacion en el archivo admin.py y registra el
+modelo de usuario personalizado AUTH_USER_MODEL = 'accounts.Account' en greatkart/settings.py del proyecto
+
+10. eliminar la base de datos db.sqlite3 y los archivos de registro de migracion en la app category.py - migrations
+11. corre el servidor de Django para crear una nueva db.sqlite3, crear los modelos y migrarlos
+> python manage.py runserver
+> python manage.py makemigrations
+> python manage.py migrate
+
+12. crear la clase administrador de cuentas de usuario y el modelo de usuario personalizado en models.py de la app 'accounts'
+
+13. configurar los archivos de media para el proyecto en greatkart/settings.py - MEDIA_URL y MEDIA_ROOT
+14. configurar la creacion de categorias de productos de Django Manager en category/admin.py
+
+################# STORE ###############
+15. crear una app para el ingreso de nuevos productos
+> python manage.py startapp store
+
+16. registra la app en greatkart/settings.py, crea la clase del modelo en models.py y registrala en admin.py para Django manager
+17. modificar greatkart/views.py, recuperando los productos disponibles desde el modelo de Productos en store/models.py
+18. modificar templates/home.html insertando las etiquetas en HTML de los productos recuperados en views.py
+19. crear un archivo url.py en la app 'store' asociandolo a su vista correspondiente en views.py y a su vez al template 'store.html'
+
+########## CONTEXT PROCESSOR ##########
+20. crear un archivo context_processors.py en la app 'category' con una funcion que permita obtener las categorias de productos de la BD
+21. agregar la funcion context_processors.menu_links a greatkart/settings.py - TEMPLATES para que sea accesible desde cualquier template
+22. modificar las etiquetas html del menu 'All category' en navbar.html para obtener dinamicamente las categorias de la BD
+23. modificar las etiquetas html del menu 'Categories' en store.html para obtener dinamicamente las categorias de la BD
+24. en la app 'store' crear una url y vista y en 'templates/store' crear un template para implementar el detalle del producto
+25. modificar las etiquetas html del producto en product_detail.html
+26. crear una funcion get_url en 'store/models.py' para modificar los links de productos en el home hacia cada pagina de detalle de producto
+
+############ SETUP GITHUB ############
+27. crear un nuevo repositorio en www.github.com
